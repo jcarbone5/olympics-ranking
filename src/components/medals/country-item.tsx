@@ -1,5 +1,4 @@
-import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { readStreamableValue } from "ai/rsc";
 
 //Components
@@ -37,13 +36,19 @@ export const CountryItem = ({
 
   const openModal = () => {
     setShowModal(true);
-    genereteInformation();
   };
 
   const closeModal = () => {
     setShowModal(false);
-    setTextGeneration("");
   };
+
+  useEffect(() => {
+    if (showModal) {
+      genereteInformation();
+    } else {
+      setTextGeneration("");
+    }
+  }, [showModal]);
 
   return (
     <>
@@ -59,7 +64,7 @@ export const CountryItem = ({
       <Modal isOpen={showModal} closeModal={closeModal}>
         <div className="flex flex-col space-y-5">
           <CountryHeader country={country} rank={rank} />
-          <div className="font-light text-md">{textGeneration}</div>
+          <div className="font-light text-md">{textGeneration || "Cargando..."}</div>
         </div>
       </Modal>
     </>
